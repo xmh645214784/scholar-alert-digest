@@ -158,7 +158,9 @@ func extractPapersFromMsg(m *gmail.Message, inclAuthors bool) ([]*Paper, error) 
 		title := strings.TrimSpace(htmlquery.InnerText(aTitle))
 		abstract := strings.TrimSpace(htmlquery.InnerText(abss[i]))
 		if inclAuthors {
-			author = extractPaperAuthor(htmlquery.InnerText(auths[i]))
+			// log.Printf("Paper Author %s", htmlquery.InnerText(auths[i]))
+      author = htmlquery.InnerText(auths[i])
+			// author = extractPaperAuthor(htmlquery.InnerText(auths[i]))
 		}
 
 		url, err := extractPaperURL(htmlquery.InnerText(urls[i]))
@@ -167,7 +169,7 @@ func extractPapersFromMsg(m *gmail.Message, inclAuthors bool) ([]*Paper, error) 
 			continue
 		}
 
-		N, lookahead := 80, 10 // max number of runes to process
+		N, lookahead := 800, 10 // max number of runes to process
 		first, rest := separateFirstLine(abstract, N, lookahead)
 		abs := Abstract{first, rest}
 
